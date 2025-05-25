@@ -1,0 +1,19 @@
+{
+	"name": "@mfe/mfe3",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"dependencies": {
+		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"typescript": "^5.8.3"
+	}
+}

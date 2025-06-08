@@ -1,0 +1,32 @@
+{
+  "name": "microfrontends_group02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "turbo run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cursosdevfull/Microfrontends_Group02.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cursosdevfull/Microfrontends_Group02/issues"
+  },
+  "homepage": "https://github.com/cursosdevfull/Microfrontends_Group02#readme",
+  "devDependencies": {
+    "turbo": "^2.5.3"
+  },
+  "packageManager": "npm@11.4.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

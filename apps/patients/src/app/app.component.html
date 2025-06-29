@@ -1,3 +1,105 @@
-
 <h1>Microfrontend Patients</h1>
+<div class="patients-container">
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" placeholder="Buscar paciente por nombre..." [(ngModel)]="searchTerm" (input)="onSearch()"
+                class="search-input">
+            <i class="search-icon">🔍</i>
+        </div>
+        <button class="add-patient-btn" (click)="showAddPatientForm()">
+            <i class="icon-add">➕</i>
+            Nuevo Paciente
+        </button>
+    </div>
 
+    @if(patients.length > 0) {
+    <div class="patients-list">
+        @for(patient of filteredPatients; track patient.patientId) {
+
+        <div class="patient-card" [class.selected]="patient.patientId.toString() === selectedPatientId"
+            (click)="selectPatient(patient)">
+
+            <div class="patient-avatar">
+                <span class="avatar-text">{{ getInitials(patient.firstName, patient.lastName) }}</span>
+            </div>
+
+            <div class="patient-info">
+                <h3 class="patient-name">{{ getFullName(patient) }}</h3>
+                <p class="patient-details">
+                    <span class="detail-item">
+                        <i class="icon-id">🆔</i>
+                        ID: {{ patient.patientId }}
+                    </span>
+                    <span class="detail-item">
+                        <i class="icon-age">🎂</i>
+                        {{ patient.age }} años
+                    </span>
+                    <span class="detail-item">
+                        <i class="icon-gender">👤</i>
+                        {{ patient.gender }}
+                    </span>
+                </p>
+                <p class="patient-contact">
+                    <span class="detail-item">
+                        <i class="icon-phone">📞</i>
+                        {{ patient.phoneNumber }}
+                    </span>
+                    <span class="detail-item">
+                        <i class="icon-email">📧</i>
+                        {{ patient.email }}
+                    </span>
+                </p>
+                <p class="patient-address">
+                    <span class="detail-item">
+                        <i class="icon-address">📍</i>
+                        {{ patient.address }}
+                    </span>
+                </p>
+                @if(patient.updatedAt) {
+                <p class="patient-dates">
+                    <span class="detail-item">
+                        <i class="icon-update">🔄</i>
+                        Actualizado: {{ formatDate(patient.updatedAt) }}
+                    </span>
+                </p>
+                }
+            </div>
+
+            <div class="patient-actions">
+                <button class="edit-btn" (click)="editPatient(patient, $event)">
+                    <i class="icon-edit">✏️</i>
+                </button>
+                <button class="delete-btn" (click)="deletePatient(patient.patientId.toString(), $event)">
+                    <i class="icon-delete">🗑️</i>
+                </button>
+            </div>
+        </div>
+
+        }
+    </div>
+    }
+
+    @if(patients.length === 0) {
+    <div class="empty-state">
+        <div class="empty-icon">👥</div>
+        <h3>No hay pacientes registrados</h3>
+        <p>Comienza agregando tu primer paciente al sistema</p>
+        <button class="add-first-patient-btn" (click)="showAddPatientForm()">
+            Agregar Primer Paciente
+        </button>
+    </div>
+    }
+
+    @if(patients.length > 0 && filteredPatients.length === 0){
+    <div class="no-results">
+        <div class="no-results-icon">🔍</div>
+        <h3>No se encontraron resultados</h3>
+        <p>Intenta con otro término de búsqueda</p>
+    </div>
+    }
+</div>
+
+<!-- Patient Form Modal -->
+<app-patient-form [isVisible]="showForm" [patient]="selectedPatientForEdit" (patientSaved)="onPatientSaved($event)"
+    (formClosed)="onFormClosed()">
+</app-patient-form>

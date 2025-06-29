@@ -1,34 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { registry } from '../registry';
+import { Component, ViewChild, ViewContainerRef, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { loadRemoteModule } from '@angular-architects/module-federation';
+import { environment } from '../../environment';
+import { APP_VERSION } from '../app.constants';
 
 @Component({
   selector: 'app-patients-app-wrapper',
   imports: [],
   templateUrl: './patients-app-wrapper.component.html',
-  styleUrl: './patients-app-wrapper.component.css',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PatientsAppWrapperComponent {
-  isElementLoaded = false;
+  @ViewChild("remotePatient", { read: ViewContainerRef, static: true }) viewContainerRef!: ViewContainerRef;
+  @Input() selectedPatientId: number | null = null;
+  async ngAfterViewInit() {
+    this.viewContainerRef.clear();
 
-  cdr = inject(ChangeDetectorRef)
+    const m = await loadRemoteModule({
+      type: "module",
+      remoteEntry: `${environment.remotesUrl.patientsApp}/remoteEntry.js?v=${APP_VERSION}`,
+      exposedModule: './web-components'
+    })
 
-  ngOnInit() {
-    this.loadElement()
-  }
-
-  loadElement() {
-    const importFn = registry.patientsApp
-
-    importFn()
-      .then(() => {
-        this.isElementLoaded = true;
-        this.cdr.detectChanges();
-        console.log('Patients app loaded successfully');
-      })
-      .catch((error: any) => {
-        console.error('Error loading patients app:', error);
-      });
+    this.viewContainerRef.createComponent(m.AppComponent);
   }
 }

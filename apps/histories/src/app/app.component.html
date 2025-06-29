@@ -1,1 +1,121 @@
-<h1>Microfrontend Histories</h1>
+<div class="histories-container">
+    @if(patientId){
+    <div class="histories-header">
+        <div class="patient-info-banner">
+            <div class="patient-avatar">
+                <span class="avatar-text">{{ getPatientInitials() }}</span>
+            </div>
+            <div class="patient-details">
+                <h3>{{ patientName || 'Paciente Seleccionado' }}</h3>
+                <p>ID: {{ patientId }}</p>
+            </div>
+            <button class="new-history-btn" (click)="showAddHistoryForm()">
+                <i class="icon-add">➕</i>
+                Nueva Historia
+            </button>
+        </div>
+    </div>
+    }
+
+    @if(patientId){
+    <div class="histories-content">
+        <div class="filter-section">
+            <select class="filter-select" [(ngModel)]="selectedFilter" (change)="applyFilter()">
+                <option value="all">Todas las historias</option>
+                <option value="recent">Últimas 7 días</option>
+                <option value="month">Último mes</option>
+                <option value="year">Último año</option>
+            </select>
+
+            <div class="sort-section">
+                <button class="sort-btn" [class.active]="sortOrder === 'desc'" (click)="toggleSort()">
+                    <i class="icon-sort">{{ sortOrder === 'desc' ? '↓' : '↑' }}</i>
+                    {{ sortOrder === 'desc' ? 'Más recientes' : 'Más antiguos' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="histories-list" *ngIf="filteredHistories.length > 0">
+            <div *ngFor="let history of filteredHistories" class="history-card" (click)="selectHistory(history)">
+
+                <div class="history-header">
+                    <div class="history-date">
+                        <i class="icon-calendar">📅</i>
+                        {{ formatDate(history.dateAttention) }}
+                    </div>
+                    <div class="history-actions">
+                        <button class="view-btn" (click)="viewHistory(history, $event)">
+                            <i class="icon-view">👁️</i>
+                        </button>
+                        <button class="edit-btn" (click)="editHistory(history, $event)">
+                            <i class="icon-edit">✏️</i>
+                        </button>
+                        <button class="delete-btn" (click)="deleteHistory(history.id, $event)">
+                            <i class="icon-delete">🗑️</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="history-body">
+                    <div class="medical-info">
+                        <div class="info-row">
+                            <span class="info-label">Médico:</span>
+                            <span class="info-value">{{ history.medicName }}</span>
+                        </div>
+                        <div class="info-row" *ngIf="history.paramedicName">
+                            <span class="info-label">Paramédico:</span>
+                            <span class="info-value">{{ history.paramedicName }}</span>
+                        </div>
+                    </div>
+
+                    <div class="symptoms-section">
+                        <h4 class="section-title">Síntomas</h4>
+                        <p class="symptoms-text">{{ history.symptoms }}</p>
+                    </div>
+
+                    <div class="diagnostic-section">
+                        <h4 class="section-title">Diagnóstico</h4>
+                        <p class="diagnostic-text">{{ history.diagnostic }}</p>
+                    </div>
+
+                    <div class="additional-info" *ngIf="history.observations || history.medicines">
+                        <div class="observations" *ngIf="history.observations">
+                            <h5 class="subsection-title">Observaciones</h5>
+                            <p class="observations-text">{{ history.observations }}</p>
+                        </div>
+                        <div class="medicines" *ngIf="history.medicines">
+                            <h5 class="subsection-title">Medicamentos</h5>
+                            <p class="medicines-text">{{ history.medicines }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-histories" *ngIf="filteredHistories.length === 0 && histories.length > 0">
+            <div class="empty-icon">🔍</div>
+            <h3>No se encontraron historias</h3>
+            <p>No hay historias que coincidan con el filtro seleccionado</p>
+        </div>
+
+        <div class="no-histories" *ngIf="histories.length === 0">
+            <div class="empty-icon">📋</div>
+            <h3>Sin historias clínicas</h3>
+            <p>Este paciente no tiene historias registradas aún</p>
+            <button class="add-first-history-btn" (click)="showAddHistoryForm()">
+                Crear Primera Historia
+            </button>
+        </div>
+    </div>
+    }
+
+    @if(!patientId) {
+    <div class="no-patient-selected">
+        <div class="selection-prompt">
+            <div class="prompt-icon">👈</div>
+            <h3>Selecciona un paciente</h3>
+            <p>Elige un paciente de la lista para ver sus historias clínicas</p>
+        </div>
+    </div>
+    }
+</div>

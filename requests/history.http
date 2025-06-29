@@ -1,0 +1,39 @@
+### Create History
+POST http://localhost:3000/history
+Content-Type: application/json
+
+{
+  "medicName": "Dr. García",
+  "paramedicName": "Enfermera López",
+  "dateAttention": "2023-12-08T10:30:00.000Z",
+  "symptoms": "Dolor de cabeza, fiebre y malestar general",
+  "observations": "Paciente presenta síntomas gripales",
+  "medicines": "Paracetamol 500mg cada 8 horas, Ibuprofeno 400mg cada 12 horas",
+  "diagnostic": "Síndrome gripal",
+  "patientId": 2
+}
+
+### Get All Histories
+GET http://localhost:3000/history
+
+### Get History by ID
+GET http://localhost:3000/history/1
+
+### Get Histories by Patient ID
+GET http://localhost:3000/history/patient/2
+
+### Get Histories with Pagination
+GET http://localhost:3000/history/page?page=1&limit=5
+
+### Update History
+PUT http://localhost:3000/history/1
+Content-Type: application/json
+
+{
+  "medicName": "Dr. García Actualizado",
+  "observations": "Paciente presenta mejoría en los síntomas",
+  "medicines": "Paracetamol 500mg cada 12 horas"
+}
+
+### Delete History (Soft Delete)
+DELETE http://localhost:3000/history/1

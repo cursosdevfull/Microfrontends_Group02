@@ -1,0 +1,48 @@
+<div class="medical-dashboard">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">
+            <i class="icon-medical"></i>
+            Sistema de Gestión Médica
+        </h1>
+        <div class="dashboard-subtitle">Gestión de Pacientes e Historias Clínicas</div>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="left-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <i class="icon-patients"></i>
+                    Lista de Pacientes
+                </h2>
+                <div class="panel-description">Selecciona un paciente para ver sus historias</div>
+            </div>
+            <div class="panel-content">
+                <app-patients-app-wrapper [selectedPatientId]="selectedPatientId"></app-patients-app-wrapper>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <i class="icon-histories"></i>
+                    Historias Clínicas
+                </h2>
+                @if(selectedPatientName) {
+                <div class="panel-description">
+                    Historias de: <strong>{{ selectedPatientName }}</strong>
+                </div>
+                }
+
+                @if(!selectedPatientName){
+                <div class="panel-description" *ngIf="!selectedPatientName">
+                    Selecciona un paciente para ver sus historias
+                </div>
+                }
+            </div>
+            <div class="panel-content">
+                <app-histories-app-wrapper [patientId]="selectedPatientId" [patientName]="selectedPatientName">
+                </app-histories-app-wrapper>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal fullwidth */
+:host {
+  display: block;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Lista de navegación */
+ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-height: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Items de la lista */
+li {
+  margin: 0 15px;
+  position: relative;
+}
+
+/* Enlaces de navegación */
+a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Efecto hover */
+a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Estado activo del enlace */
+a.active {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto de ondas al hacer click */
+a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+a:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  ul {
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    min-height: auto;
+  }
+  
+  li {
+    margin: 5px 10px;
+  }
+  
+  a {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  ul {
+    flex-direction: column;
+    padding: 15px;
+  }
+  
+  li {
+    margin: 3px 0;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  a {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+/* Animación de entrada */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+:host {
+  animation: slideInFromTop 0.5s ease-out;
+}
+
+/* Indicador de página activa con línea inferior */
+a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Efecto de focus para accesibilidad */
+a:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Variante con modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :host {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+}
